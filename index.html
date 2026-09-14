@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="R-Test Playground - A hands-on learning space for R programming, data visualization, and statistical analysis.">
+    <meta name="keywords" content="R, Programming, Data Visualization, Statistics, Learning">
+    <meta name="author" content="Shahadah-studs">
+    <title>R-Test Playground | Data Visualization & Statistical Learning</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1e40af;
+            --secondary-color: #0ea5e9;
+            --accent-color: #f59e0b;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-light: #e2e8f0;
+            --text-muted: #cbd5e1;
+            --border-color: #334155;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1f3a 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo:hover {
+            color: var(--accent-color);
+            transition: 0.3s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .github-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .github-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            text-align: center;
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid var(--secondary-color);
+            color: var(--secondary-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            border-radius: 0.6rem;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--secondary-color);
+            border: 2px solid var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-color);
+            color: var(--dark-bg);
+            transform: translateY(-3px);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Features Section */
+        .features {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.8rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            border-color: var(--secondary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.1);
+            background: rgba(14, 165, 233, 0.05);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: var(--secondary-color);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* Projects Section */
+        .projects {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.8rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            border-color: var(--secondary-color);
+            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.1);
+            transform: translateX(5px);
+        }
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-icon {
+            font-size: 2rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+        }
+
+        .project-tag {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 0.3rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .project-description {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .project-features {
+            background: rgba(14, 165, 233, 0.05);
+            border-left: 3px solid var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 0.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-features h4 {
+            color: var(--secondary-color);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .project-features ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .project-features li {
+            color: var(--text-muted);
+            padding: 0.4rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .project-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: #0a0e27;
+            border: 1px solid var(--border-color);
+            border-radius: 0.4rem;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            color: #00ff88;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Resources Section */
+        .resources {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .resource-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.6rem;
+            text-decoration: none;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .resource-link:hover {
+            border-color: var(--secondary-color);
+            background: rgba(14, 165, 233, 0.05);
+            transform: translateY(-3px);
+        }
+
+        .resource-icon {
+            font-size: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .resource-info h4 {
+            color: var(--text-light);
+            margin-bottom: 0.3rem;
+        }
+
+        .resource-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Getting Started Section */
+        .getting-started {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.8rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-card:hover {
+            border-color: var(--secondary-color);
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .step-card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 0.8rem;
+        }
+
+        .step-card p {
+            color: var(--text-muted);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(14, 165, 233, 0.1) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--secondary-color);
+            color: var(--dark-bg);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero {
+                padding: 3rem 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-card,
+        .project-card,
+        .step-card {
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary-color);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="navbar-container">
+            <a href="#" class="logo">
+                <span>🧱</span> R-Test Playground
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#getting-started">Getting Started</a></li>
+                <li><a href="#resources">Resources</a></li>
+                <li><a href="https://github.com/Shahadah-studs/R-test-Playground" target="_blank" class="github-btn">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">🚀 Welcome to R Programming</div>
+        <h1>R-Test Playground</h1>
+        <p class="hero-subtitle">Explore the power of R through interactive data visualization and statistical computing. Your sandbox for learning and experimentation.</p>
+        
+        <div class="hero-buttons">
+            <a href="https://github.com/Shahadah-studs/R-test-Playground" target="_blank" class="btn btn-primary">View on GitHub</a>
+            <a href="#projects" class="btn btn-secondary">Explore Projects</a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">R Language</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">1</div>
+                <div class="stat-label">Active Project</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4 Days</div>
+                <div class="stat-label">Young & Fresh</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">✨ Why Choose R?</h2>
+        <p class="section-subtitle">Discover the powerful capabilities that make R the language of choice for data scientists worldwide</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Data Visualization</h3>
+                <p>Create stunning, publication-quality graphics with base R, ggplot2, and more. Transform complex data into compelling visual stories.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3>Statistical Analysis</h3>
+                <p>Perform comprehensive statistical tests, modeling, and analysis with built-in functions and thousands of specialized packages.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔬</div>
+                <h3>Data Manipulation</h3>
+                <p>Efficiently clean, transform, and manipulate datasets using powerful tools like dplyr and data.table for seamless data workflows.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Customization</h3>
+                <p>Complete control over every aspect of your visualizations and analyses. From colors to algorithms, make everything your own.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>Rich Ecosystem</h3>
+                <p>Access to 20,000+ packages on CRAN. Whether it's machine learning, bioinformatics, or finance, R has you covered.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3>Thriving Community</h3>
+                <p>Join millions of data scientists, statisticians, and researchers worldwide. Get help, share ideas, and collaborate on projects.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <h2 class="section-title">🎯 Featured Projects</h2>
+        <p class="section-subtitle">Explore our current experiments and learning exercises</p>
+
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon">📊</div>
+                <div>
+                    <h3>Lego Bricks Analysis</h3>
+                    <span class="project-tag">Data Visualization</span>
+                </div>
+            </div>
+            
+            <p class="project-description">
+                A fun and colorful data visualization project analyzing the distribution of Lego bricks by color. This script demonstrates fundamental R concepts including data structures, vector operations, and creating professional-quality pie charts with custom styling.
+            </p>
+
+            <div class="project-features">
+                <h4>📌 Key Features:</h4>
+                <ul>
+                    <li>Vector creation and manipulation</li>
+                    <li>Percentage calculations and rounding</li>
+                    <li>Dynamic label generation with paste()</li>
+                    <li>Publication-quality pie charts</li>
+                    <li>Brand-accurate color representation</li>
+                    <li>Custom borders and styling</li>
+                </ul>
+            </div>
+
+            <p class="project-description" style="font-weight: 600; color: var(--secondary-color);">📈 Sample Output:</p>
+            <p class="project-description">
+                The script generates a beautiful pie chart showing the usage percentages of each brick color:
+                <br><br>
+                🔴 <strong>Red bricks:</strong> ~28.6% (120 bricks)<br>
+                🔵 <strong>Blue bricks:</strong> ~21.4% (90 bricks)<br>
+                🟡 <strong>Yellow bricks:</strong> ~35.7% (150 bricks)<br>
+                🟢 <strong>Green bricks:</strong> ~10.7% (45 bricks)
+            </p>
+
+            <div class="code-block">
+                <code>
+# Load and visualize Lego brick data
+lego_colors &lt;- c("Red bricks", "Blue Bricks", "Yellow Bricks", "Green Bricks")<br>
+brick_counts &lt;- c(120, 90, 150, 45)<br>
+visual_colors &lt;- c("#C91A09", "#0055A5", "#F2CD37", "#237841")<br>
+<br>
+# Create beautiful pie chart
+pie(x = brick_counts, labels = chart_labels, col = visual_colors,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;main = "Lego Colored bricks usage percentage", clockwise = TRUE)
+                </code>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started Section -->
+    <section class="getting-started" id="getting-started">
+        <h2 class="section-title">🚀 Getting Started</h2>
+        <p class="section-subtitle">Set up and run the R-Test Playground in just a few simple steps</p>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Clone Repository</h3>
+                <p>Clone the project to your local machine using Git. This brings all the code and files to your computer.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Install R</h3>
+                <p>Ensure you have R (3.5.0 or higher) installed. We recommend using RStudio IDE for the best development experience.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Run Scripts</h3>
+                <p>Navigate to the main.R file and execute it in your R console or RStudio to see the Lego visualization in action.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3>Customize</h3>
+                <p>Modify the data, colors, and styling to experiment. Change values and immediately see how it affects the visualization.</p>
+            </div>
+        </div>
+
+        <div class="cta-section" style="margin-top: 3rem;">
+            <h2>Ready to Dive In?</h2>
+            <p>Visit our GitHub repository to clone the code, explore the documentation, and start your R learning journey today!</p>
+            <a href="https://github.com/Shahadah-studs/R-test-Playground" target="_blank" class="btn btn-primary">Go to GitHub Repository</a>
+        </div>
+    </section>
+
+    <!-- Learning Resources Section -->
+    <section class="resources" id="resources">
+        <h2 class="section-title">📚 Learning Resources</h2>
+        <p class="section-subtitle">Curated resources to accelerate your R learning journey</p>
+
+        <div class="resources-grid">
+            <a href="https://www.r-project.org/" target="_blank" class="resource-link">
+                <div class="resource-icon">🌐</div>
+                <div class="resource-info">
+                    <h4>R Official Site</h4>
+                    <p>The official R Project website with downloads and documentation</p>
+                </div>
+            </a>
+
+            <a href="https://rstudio.com/" target="_blank" class="resource-link">
+                <div class="resource-icon">💻</div>
+                <div class="resource-info">
+                    <h4>RStudio IDE</h4>
+                    <p>Professional IDE for R development and data analysis</p>
+                </div>
+            </a>
+
+            <a href="https://r-graphics.org/" target="_blank" class="resource-link">
+                <div class="resource-icon">🎨</div>
+                <div class="resource-info">
+                    <h4>R Graphics Cookbook</h4>
+                    <p>Comprehensive guide to creating graphics with R</p>
+                </div>
+            </a>
+
+            <a href="https://community.rstudio.com/" target="_blank" class="resource-link">
+                <div class="resource-icon">👥</div>
+                <div class="resource-info">
+                    <h4>RStudio Community</h4>
+                    <p>Active community for asking questions and sharing knowledge</p>
+                </div>
+            </a>
+
+            <a href="https://www.bricklink.com/catalogColors.asp" target="_blank" class="resource-link">
+                <div class="resource-icon">🧱</div>
+                <div class="resource-info">
+                    <h4>Lego Color Guide</h4>
+                    <p>Official reference for Lego color codes and specifications</p>
+                </div>
+            </a>
+
+            <a href="https://cran.r-project.org/" target="_blank" class="resource-link">
+                <div class="resource-icon">📦</div>
+                <div class="resource-info">
+                    <h4>CRAN Repository</h4>
+                    <p>Access to 20,000+ R packages and libraries</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>🧱 R-Test Playground</h4>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">A hands-on learning space for exploring R programming, data visualization, and statistical analysis.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/Shahadah-studs" target="_blank" class="social-link">
+                            <span>🐙</span>
+                        </a>
+                        <a href="https://github.com/Shahadah-studs/R-test-Playground" target="_blank" class="social-link">
+                            <span>📌</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#getting-started">Getting Started</a></li>
+                        <li><a href="#resources">Resources</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Learning Topics</h4>
+                    <ul>
+                        <li><a href="#">Vector Operations</a></li>
+                        <li><a href="#">Data Visualization</a></li>
+                        <li><a href="#">Statistical Analysis</a></li>
+                        <li><a href="#">Data Manipulation</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="https://www.r-project.org/" target="_blank">R Official</a></li>
+                        <li><a href="https://rstudio.com/" target="_blank">RStudio</a></li>
+                        <li><a href="https://cran.r-project.org/" target="_blank">CRAN</a></li>
+                        <li><a href="https://r-graphics.org/" target="_blank">Graphics Guide</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 R-Test Playground by <a href="https://github.com/Shahadah-studs" target="_blank" style="color: var(--secondary-color); text-decoration: none;">Shahadah-studs</a>. All rights reserved.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">Made with ❤️ for the R community | Last Updated: 2026-09-14</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .project-card, .step-card').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
